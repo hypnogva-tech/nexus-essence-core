@@ -120,8 +120,8 @@ export function MultiStepForm() {
                   onClick={() => update("proprietaire", opt)}
                   className={`px-4 py-3 text-sm border rounded transition-colors ${
                     data.proprietaire === opt
-                      ? "border-ink bg-ink text-ivory"
-                      : "border-border hover:border-ink/50"
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border hover:border-primary/60"
                   }`}
                 >
                   {opt}
@@ -150,8 +150,8 @@ export function MultiStepForm() {
                 onClick={() => update("projet", opt)}
                 className={`text-left px-4 py-3 text-sm border rounded transition-colors ${
                   data.projet === opt
-                    ? "border-ink bg-secondary"
-                    : "border-border hover:border-ink/50"
+                    ? "border-primary bg-primary/10 text-foreground"
+                    : "border-border hover:border-primary/60"
                 }`}
               >
                 {opt}
@@ -208,7 +208,7 @@ export function MultiStepForm() {
           <label className="flex items-start gap-3 text-xs text-muted-foreground leading-relaxed cursor-pointer">
             <input
               type="checkbox"
-              className="mt-0.5 accent-ink"
+              className="mt-0.5 accent-primary"
               checked={data.consent}
               onChange={(e) => update("consent", e.target.checked)}
             />
@@ -225,7 +225,7 @@ export function MultiStepForm() {
         <button
           type="button"
           onClick={() => setStep((s) => Math.max(1, s - 1) as Step)}
-          className={`text-sm text-muted-foreground hover:text-ink transition-colors ${
+          className={`text-sm text-muted-foreground hover:text-foreground transition-colors ${
             step === 1 ? "invisible" : ""
           }`}
         >
