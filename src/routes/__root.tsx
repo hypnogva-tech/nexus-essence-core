@@ -10,22 +10,21 @@ import {
 
 import appCss from "../styles.css?url";
 
+const SITE_NAME = "Romandie Énergies";
+const SITE_DESC =
+  "Mise en relation avec des installateurs certifiés en Suisse romande : solaire, pompes à chaleur, isolation, bornes de recharge.";
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <p className="eyebrow justify-center">Erreur 404</p>
+        <h1 className="mt-4">Page introuvable</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          La page que vous cherchez n'existe pas ou a été déplacée.
         </p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+          <Link to="/" className="btn-primary">Revenir à l'accueil</Link>
         </div>
       </div>
     </div>
@@ -35,56 +34,76 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <h1>Une erreur est survenue</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Veuillez réessayer ou revenir à l'accueil.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
+        <div className="mt-6 flex justify-center gap-3">
+          <button onClick={() => { router.invalidate(); reset(); }} className="btn-primary">
+            Réessayer
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
+          <a href="/" className="btn-ghost">Accueil</a>
         </div>
       </div>
     </div>
   );
 }
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: SITE_NAME,
+  description: SITE_DESC,
+  areaServed: [
+    { "@type": "AdministrativeArea", name: "Vaud" },
+    { "@type": "AdministrativeArea", name: "Genève" },
+    { "@type": "AdministrativeArea", name: "Valais" },
+    { "@type": "AdministrativeArea", name: "Fribourg" },
+    { "@type": "AdministrativeArea", name: "Neuchâtel" },
+    { "@type": "AdministrativeArea", name: "Jura" },
+  ],
+  inLanguage: "fr-CH",
+  serviceType: [
+    "Énergie solaire photovoltaïque",
+    "Pompe à chaleur",
+    "Isolation thermique",
+    "Borne de recharge véhicule électrique",
+  ],
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: `${SITE_NAME} — Étude énergétique pour propriétaires romands` },
+      { name: "description", content: SITE_DESC },
+      { name: "author", content: SITE_NAME },
+      { name: "robots", content: "index, follow" },
+      { httpEquiv: "content-language", content: "fr-CH" },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:locale", content: "fr_CH" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:title", content: SITE_NAME },
+      { property: "og:description", content: SITE_DESC },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter+Tight:wght@400;500;600&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(localBusinessJsonLd),
       },
     ],
   }),
@@ -96,7 +115,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="fr-CH">
       <head>
         <HeadContent />
       </head>
@@ -110,7 +129,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
